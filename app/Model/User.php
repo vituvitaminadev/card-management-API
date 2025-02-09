@@ -22,53 +22,64 @@ use Hyperf\DbConnection\Model\Model;
  * @property Carbon $updated_at
  * @property Collection $cards
  * @property Collection $heldCards
+ * @property Collection $transactions
  */
 class User extends Model
 {
-    protected ?string $table = 'users';
+	protected ?string $table = 'users';
 
-    protected array $fillable = [
-        'name',
-        'email',
-        'document',
-        'password',
-        'type',
-    ];
+	protected array $fillable = [
+		'name',
+		'email',
+		'document',
+		'password',
+		'type',
+	];
 
-    protected array $casts = [
-        'id' => 'integer',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime'
-    ];
+	protected array $casts = [
+		'id' => 'integer',
+		'created_at' => 'datetime',
+		'updated_at' => 'datetime',
+	];
 
-    public static function findByEmail(string $email): User|Builder
-    {
-        $user = self::where('email', $email)->first();
+	public static function findByEmail(string $email): Builder|User
+	{
+		$user = self::where('email', $email)->first();
 
-        if (!$user) {
-            throw new InvalidCredentialsException();
-        }
+		if (! $user) {
+			throw new InvalidCredentialsException();
+		}
 
-        return $user;
-    }
+		return $user;
+	}
 
-    public function cards(): HasMany
-    {
-        return $this->hasMany(Card::class, 'user_id');
-    }
+	public function cards(): HasMany
+	{
+		return $this->hasMany(Card::class, 'user_id');
+	}
 
-    public function getCards(): Collection
-    {
-        return $this->cards;
-    }
+	public function getCards(): Collection
+	{
+		return $this->cards;
+	}
 
-    public function heldCards(): HasMany
-    {
-        return $this->hasMany(Card::class, 'holder_id');
-    }
+	public function heldCards(): HasMany
+	{
+		return $this->hasMany(Card::class, 'holder_id');
+	}
 
-    public function getHeldCards(): Collection
-    {
-        return $this->heldCards;
-    }
+	public function getHeldCards(): Collection
+	{
+		return $this->heldCards;
+	}
+
+	public function transactions(): HasMany
+	{
+		return $this->hasMany(Transaction::class);
+	}
+
+	public function getTransactions(): Collection
+	{
+		return $this->transactions;
+	}
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Enum\Card\CardStatusEnum;
@@ -8,43 +10,52 @@ use App\Model\User;
 
 class CardService
 {
-    public function create(User $user, string $alias): Card
-    {
-        return Card::with('user', 'holder')->create([
-            'user_id' => $user->id,
-            'holder_id' => $user->id,
-            'alias' => $alias,
-            'status' => CardStatusEnum::BLOCKED->value,
-            'balance' => 0
-        ]);
-    }
+	public function create(User $user, string $alias): Card
+	{
+		return Card::with('user', 'holder')->create([
+			'user_id' => $user->id,
+			'holder_id' => $user->id,
+			'alias' => $alias,
+			'status' => CardStatusEnum::BLOCKED->value,
+			'balance' => 0,
+		]);
+	}
 
-    public function associate(Card $card, User $holder): Card
-    {
-       $card->update([
-            'holder_id' => $holder->id
-       ]);
+	public function associate(Card $card, User $holder): Card
+	{
+		$card->update([
+			'holder_id' => $holder->id,
+		]);
 
-       $card->refresh();
+		$card->refresh();
 
-       return $card;
-    }
+		return $card;
+	}
 
-    public function unblock(Card $card): Card
-    {
-        $card->update([
-            'status' => CardStatusEnum::ACTIVE->value
-        ]);
+	public function unblock(Card $card): Card
+	{
+		$card->update([
+			'status' => CardStatusEnum::ACTIVE->value,
+		]);
 
-        return $card;
-    }
+		return $card;
+	}
 
-    public function balance(Card $card, int $balance): Card
-    {
-        $card->update([
-            'balance' => $card->balance +$balance
-        ]);
+	public function block(Card $card): Card
+	{
+		$card->update([
+			'status' => CardStatusEnum::BLOCKED->value,
+		]);
 
-        return $card;
-    }
+		return $card;
+	}
+
+	public function balance(Card $card, int $balance): Card
+	{
+		$card->update([
+			'balance' => $card->balance + $balance,
+		]);
+
+		return $card;
+	}
 }

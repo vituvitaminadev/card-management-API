@@ -19,32 +19,32 @@ use Hyperf\HttpServer\Router\Router;
 use Hyperf\Validation\Middleware\ValidationMiddleware;
 
 Router::addGroup('/auth', function () {
-    Router::post('/sign-up', [AuthController::class, 'signUp']);
-    Router::post('/sign-in', [AuthController::class, 'signIn']);
+	Router::post('/sign-up', [AuthController::class, 'signUp']);
+	Router::post('/sign-in', [AuthController::class, 'signIn']);
 }, [
-    'middleware' => [
-        GlobalMiddleware::class,
-        ValidationMiddleware::class
-    ]
+	'middleware' => [
+		GlobalMiddleware::class,
+		ValidationMiddleware::class,
+	],
 ]);
 
 Router::addGroup('/one', function () {
-    Router::addGroup('/user', function () {
-        Router::get('/', [UserController::class, 'list']);
-        Router::get('/{id}', [UserController::class, 'show']);
-    });
+	Router::addGroup('/user', function () {
+		Router::get('/', [UserController::class, 'list']);
+		Router::get('/{id}', [UserController::class, 'show']);
+	});
 
-    Router::addGroup('/card', function () {
-        Router::post('/', [CardController::class, 'create']);
-        Router::post('/associate', [CardController::class, 'associate']);
+	Router::addGroup('/card', function () {
+		Router::post('/', [CardController::class, 'create']);
+		Router::post('/associate', [CardController::class, 'associate']);
 
-        Router::put('/{id}/unblock', [CardController::class, 'unblock']);
-
-        Router::put('/{id}/balance', [CardController::class, 'balance']);
-    });
+		Router::put('/{id}/unblock', [CardController::class, 'unblock']);
+		Router::put('/{id}/block', [CardController::class, 'block']);
+		Router::put('/{id}/balance', [CardController::class, 'balance']);
+	});
 }, [
-    'middleware' => [
-        AuthMiddleware::class,
-        ValidationMiddleware::class
-    ],
+	'middleware' => [
+		AuthMiddleware::class,
+		ValidationMiddleware::class,
+	],
 ]);
