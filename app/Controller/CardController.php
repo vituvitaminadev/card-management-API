@@ -45,9 +45,9 @@ class CardController
 		return CardResource::make($card)->toResponse();
 	}
 
-	public function balance(UpdateCardBalanceRequest $request): PsrResponseInterface
+	public function fundsIn(UpdateCardBalanceRequest $request): PsrResponseInterface
 	{
-		$card = $this->cardService->balance($request->getCard(), $request->getBalance());
+		$card = $this->cardService->fundsIn($request->getCard(), $request->getBalance());
 
 		return CardResource::make($card)->toResponse();
 	}

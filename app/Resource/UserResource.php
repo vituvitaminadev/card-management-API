@@ -20,7 +20,6 @@ class UserResource extends JsonResource
 			'email' => $this->email,
 			'document' => $this->document,
 			'type' => $this->type,
-			'created_at' => $this->created_at,
 		];
 
 		if ($this->relationLoaded('cards')) {

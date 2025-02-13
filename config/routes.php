@@ -1,17 +1,10 @@
 <?php
 
 declare(strict_types=1);
-/**
- * This file is part of Hyperf.
- *
- * @link     https://www.hyperf.io
- * @document https://hyperf.wiki
- * @contact  group@hyperf.io
- * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
- */
 
 use App\Controller\AuthController;
 use App\Controller\CardController;
+use App\Controller\TransactionController;
 use App\Controller\UserController;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\GlobalMiddleware;
@@ -40,7 +33,11 @@ Router::addGroup('/one', function () {
 
 		Router::put('/{id}/unblock', [CardController::class, 'unblock']);
 		Router::put('/{id}/block', [CardController::class, 'block']);
-		Router::put('/{id}/balance', [CardController::class, 'balance']);
+		Router::put('/{id}/funds-in', [CardController::class, 'fundsIn']);
+	});
+
+	Router::addGroup('/transaction', function () {
+		Router::post('/', [TransactionController::class, 'create']);
 	});
 }, [
 	'middleware' => [

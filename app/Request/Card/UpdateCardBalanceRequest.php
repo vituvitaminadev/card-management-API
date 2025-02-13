@@ -11,7 +11,7 @@ class UpdateCardBalanceRequest extends BaseCardRequest
 	public function rules(): array
 	{
 		return [
-			'balance' => 'required|integer|gt:0',
+			'balance' => ['integer', 'required', 'gt:0'],
 		];
 	}
 

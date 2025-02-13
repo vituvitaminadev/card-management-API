@@ -10,15 +10,24 @@ use App\Model\User;
 
 class CardService
 {
+	private function __construct() {}
+
+	public static function instantiate(): self
+	{
+		return new self();
+	}
+
 	public function create(User $user, string $alias): Card
 	{
-		return Card::with('user', 'holder')->create([
+		$card = Card::create([
 			'user_id' => $user->id,
 			'holder_id' => $user->id,
 			'alias' => $alias,
 			'status' => CardStatusEnum::BLOCKED->value,
 			'balance' => 0,
 		]);
+
+		return $card->load('user', 'holder');
 	}
 
 	public function associate(Card $card, User $holder): Card
@@ -50,10 +59,19 @@ class CardService
 		return $card;
 	}
 
-	public function balance(Card $card, int $balance): Card
+	public function fundsIn(Card $card, int $value): Card
 	{
 		$card->update([
-			'balance' => $card->balance + $balance,
+			'balance' => $card->balance + $value,
+		]);
+
+		return $card;
+	}
+
+	public function fundsOut(Card $card, int $value): Card
+	{
+		$card->update([
+			'balance' => $card->balance - $value,
 		]);
 
 		return $card;

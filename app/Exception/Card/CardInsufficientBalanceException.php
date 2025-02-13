@@ -8,12 +8,12 @@ use App\Enum\ExceptionMessageCodeEnum;
 use App\Exception\AbstractException;
 use Swoole\Http\Status;
 
-class CardNotFoundException extends AbstractException
+class CardInsufficientBalanceException extends AbstractException
 {
 	public function __construct()
 	{
-		$code = Status::NOT_FOUND;
-		$message = ExceptionMessageCodeEnum::CARD_NOT_FOUND;
+		$code = Status::PAYMENT_REQUIRED;
+		$message = ExceptionMessageCodeEnum::INSUFFICIENT_BALANCE;
 		parent::__construct($message, $code);
 	}
 }

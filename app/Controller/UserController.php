@@ -11,15 +11,12 @@ use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
 
 class UserController
 {
-    public function __construct(protected readonly UserService $userService)
-    {
+	public function __construct(protected readonly UserService $userService) {}
 
-    }
+	public function list(ListUserRequest $request): PsrResponseInterface
+	{
+		$users = $this->userService->list();
 
-    public function list(ListUserRequest $request): PsrResponseInterface
-    {
-        $users = $this->userService->list();
-
-        return UserResource::collection($users)->toResponse();
-    }
+		return UserResource::collection($users)->toResponse();
+	}
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Exception\Auth\InvalidCredentialsException;
@@ -9,75 +11,82 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Hyperf\Context\Context;
 use Throwable;
+
 use function Hyperf\Config\config;
 
 class AuthService
 {
-    private const CONTEXT_KEY = 'jwt_token';
-    private string $secretKey;
+	private const CONTEXT_KEY = 'jwt_token';
 
-    public function __construct()
-    {
-        $this->secretKey = config('app_secret');
-    }
+	private string $secretKey;
 
-    public function signUp(array $data): User
-    {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'document' => $data['document'],
-            'password' => password_hash($data['password'], PASSWORD_BCRYPT),
-            'type' => $data['type']
-        ]);
-    }
+	private function __construct()
+	{
+		$this->secretKey = config('app_secret');
+	}
 
-    public function signIn(?User $user, array $data): string
-    {
-        if (!$user || !password_verify($data['password'], $user->password)) {
-            throw new InvalidCredentialsException();
-        }
+	public static function instantiate(): self
+	{
+		return new self();
+	}
 
-        return $this->issueToken($user);
-    }
+	public function signUp(array $data): User
+	{
+		return User::create([
+			'name' => $data['name'],
+			'email' => $data['email'],
+			'document' => $data['document'],
+			'password' => password_hash($data['password'], PASSWORD_BCRYPT),
+			'type' => $data['type'],
+		]);
+	}
 
-    private function issueToken(User $user): string
-    {
-        $payload = $this->getTokenData($user);
+	public function signIn(?User $user, array $data): string
+	{
+		if (!$user || !password_verify($data['password'], $user->password)) {
+			throw new InvalidCredentialsException();
+		}
 
-        return JWT::encode($payload, $this->secretKey, 'HS256');
-    }
+		return $this->issueToken($user);
+	}
 
-    private function getTokenData(User $user): array
-    {
-        return [
-            'iss' => config('app_url'),
-            'aud' => config('app_url'),
-            'iat' => time(),
-            'nbf' => time(),
-            'exp' => time() + 3600,
-            'sub' => $user->id,
-            'type' => $user->type
-        ];
-    }
+	public function decodeToken(string $token): ?object
+	{
+		try {
+			return JWT::decode($token, new Key($this->secretKey, 'HS256'));
+		} catch (Throwable) {
+			return null;
+		}
+	}
 
-    public function decodeToken(string $token): ?object
-    {
-        try {
-            return JWT::decode($token, new Key($this->secretKey, 'HS256'));
-        } catch (Throwable) {
-            return null;
-        }
-    }
+	public function getLoggedUser(): User
+	{
+		try {
+			$token = Context::get(self::CONTEXT_KEY);
 
-    public function getLoggedUser(): User
-    {
-        try {
-            $token = Context::get(self::CONTEXT_KEY);
+			return User::findOrFail($token->sub);
+		} catch (Throwable) {
+			throw new UnauthorizedException();
+		}
+	}
 
-            return User::findOrFail($token->sub);
-        } catch (Throwable) {
-            throw new UnauthorizedException();
-        }
-    }
+	private function issueToken(User $user): string
+	{
+		$payload = $this->getTokenData($user);
+
+		return JWT::encode($payload, $this->secretKey, 'HS256');
+	}
+
+	private function getTokenData(User $user): array
+	{
+		return [
+			'iss' => config('app_url'),
+			'aud' => config('app_url'),
+			'iat' => time(),
+			'nbf' => time(),
+			'exp' => time() + 3600,
+			'sub' => $user->id,
+			'type' => $user->type,
+		];
+	}
 }

@@ -38,6 +38,10 @@ return (new Config())
 		'@DoctrineAnnotation' => true,
 		'@PhpCsFixer' => true,
 		'header_comment' => false,
+		'braces_position' => [
+			'position_after_functions_and_oop_constructs' => 'next',
+			'position_after_anonymous_constructs' => 'next'
+		],
 		'array_syntax' => [
 			'syntax' => 'short',
 		],
@@ -94,8 +98,9 @@ return (new Config())
 		'lowercase_static_reference' => true,
 		'no_useless_else' => true,
 		'no_unused_imports' => true,
-		'not_operator_with_successor_space' => true,
+		'not_operator_with_successor_space' => false,
 		'not_operator_with_space' => false,
+		'unary_operator_spaces' => false,
 		'ordered_class_elements' => true,
 		'php_unit_strict' => false,
 		'phpdoc_separation' => false,
