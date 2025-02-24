@@ -7,13 +7,15 @@ namespace App\Service;
 use App\Model\User;
 use Hyperf\Collection\Collection;
 
+use function Hyperf\Support\make;
+
 class UserService
 {
-	private function __construct() {}
+	public function __construct() {}
 
 	public static function instantiate(): self
 	{
-		return new self();
+		return make(self::class);
 	}
 
 	public function list(): Collection

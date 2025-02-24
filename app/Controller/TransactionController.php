@@ -26,7 +26,7 @@ class TransactionController
 
 	public function create(CreateTransactionRequest $request): PsrResponseInterface
 	{
-		$transaction = $this->transactionService->create(
+		$transaction = TransactionService::instantiate()->create(
 			$request->getUser(),
 			$request->getCard(),
 			$request->getDescription(),

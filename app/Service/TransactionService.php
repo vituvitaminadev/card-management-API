@@ -9,13 +9,15 @@ use App\Model\Card;
 use App\Model\Transaction;
 use App\Model\User;
 
+use function Hyperf\Support\make;
+
 class TransactionService
 {
 	public function __construct() {}
 
 	public static function instantiate(): self
 	{
-        return new self();
+		return make(self::class);
 	}
 
 	public function create(User $user, Card $card, string $description, TransactionTypeEnum $type, int $value): Transaction
@@ -28,8 +30,20 @@ class TransactionService
 			'value' => $value,
 		]);
 
-		CardService::instantiate()->fundsOut($card, $value);
+		$this->handleCardBalanceChange($card, $type, $value);
 
 		return $transaction->load('user', 'card');
+	}
+
+	public function list() {}
+
+	private function handleCardBalanceChange(Card $card, TransactionTypeEnum $type, int $value): void
+	{
+		if ($type === TransactionTypeEnum::FundsIn) {
+			CardService::instantiate()->fundsIn($card, $value);
+			return;
+		}
+
+		CardService::instantiate()->fundsOut($card, $value);
 	}
 }

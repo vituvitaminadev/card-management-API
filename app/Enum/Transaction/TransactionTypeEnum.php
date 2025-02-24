@@ -10,6 +10,7 @@ enum TransactionTypeEnum: string
 {
 	use EnumTrait;
 
-	case PURCHASE = 'purchase';
-	case REFUND = 'refund';
+	case Purchase = 'purchase';
+	case Refund = 'refund';
+	case FundsIn = 'funds-in';
 }

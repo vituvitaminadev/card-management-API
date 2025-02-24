@@ -44,8 +44,9 @@ class CreateTransactionRequest extends BaseRequest
 		$type = $this->input('type');
 
 		return match ($type) {
-			TransactionTypeEnum::PURCHASE->value => TransactionTypeEnum::PURCHASE,
-			TransactionTypeEnum::REFUND->value => TransactionTypeEnum::REFUND
+			TransactionTypeEnum::Purchase->value => TransactionTypeEnum::Purchase,
+			TransactionTypeEnum::Refund->value => TransactionTypeEnum::Refund,
+			TransactionTypeEnum::FundsIn->value => TransactionTypeEnum::FundsIn
 		};
 	}
 
