@@ -37,6 +37,8 @@ Router::addGroup('/one', function () {
 	});
 
 	Router::addGroup('/transaction', function () {
+        Router::get('/', [TransactionController::class, 'index']);
+
 		Router::post('/', [TransactionController::class, 'create']);
 	});
 }, [

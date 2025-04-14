@@ -7,14 +7,15 @@ namespace App\Service;
 use App\Enum\Card\CardStatusEnum;
 use App\Model\Card;
 use App\Model\User;
+use function Hyperf\Support\make;
 
 class CardService
 {
-	private function __construct() {}
+	public function __construct() {}
 
 	public static function instantiate(): self
 	{
-		return new self();
+		return make(self::class);
 	}
 
 	public function create(User $user, string $alias): Card

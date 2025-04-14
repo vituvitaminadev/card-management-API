@@ -11,12 +11,11 @@ use App\Model\User;
 
 class TransactionService
 {
-	private function __construct() {
-	}
+	public function __construct() {}
 
 	public static function instantiate(): self
 	{
-	return new self();
+        return new self();
 	}
 
 	public function create(User $user, Card $card, string $description, TransactionTypeEnum $type, int $value): Transaction
