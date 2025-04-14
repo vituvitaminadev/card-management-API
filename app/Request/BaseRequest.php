@@ -12,7 +12,7 @@ class BaseRequest extends FormRequest
 {
     protected bool $onlyAdmin = false;
 
-    public function authorize(): bool
+    protected function authorize(): bool
     {
         $this->prepareForValidation();
         $token = Context::get('jwt_token');
