@@ -13,6 +13,7 @@ use Hyperf\Context\Context;
 use Throwable;
 
 use function Hyperf\Config\config;
+use function Hyperf\Support\make;
 
 class AuthService
 {
@@ -20,14 +21,14 @@ class AuthService
 
 	private string $secretKey;
 
-	private function __construct()
+	public function __construct()
 	{
 		$this->secretKey = config('app_secret');
 	}
 
 	public static function instantiate(): self
 	{
-		return new self();
+		return make(self::class);
 	}
 
 	public function signUp(array $data): User
