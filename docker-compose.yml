@@ -1,4 +1,3 @@
-version: '3.8'
 name: one-on-one
 volumes:
     one-on-one-db-data:
@@ -16,6 +15,8 @@ services:
       - APP_ENV=dev
       - SCAN_CACHEABLE=false
     entrypoint: ["sh", "-c", "composer install && php /opt/www/bin/hyperf.php server:watch"]
+    networks:
+      - one-on-one
   db:
     container_name: one-db
     image: mysql:latest
@@ -28,7 +29,19 @@ services:
       MYSQL_TCP_PORT: 3331
     ports:
       - "3331:3331"
+    networks:
+      - one-on-one
+  redis:
+    container_name: one-redis
+    image: redis:latest
+    build: .
+    tty: true
+    restart: unless-stopped
+    ports:
+      - "6376:6376"
+    networks:
+      - one-on-one
 
 networks:
-  default:
+  one-on-one:
     name: one-on-one
