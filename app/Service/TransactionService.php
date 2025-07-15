@@ -8,7 +8,7 @@ use App\Enum\Transaction\TransactionTypeEnum;
 use App\Model\Card;
 use App\Model\Transaction;
 use App\Model\User;
-
+use Hyperf\Database\Model\Collection;
 use function Hyperf\Support\make;
 
 class TransactionService
@@ -34,8 +34,6 @@ class TransactionService
 
 		return $transaction->load('user', 'card');
 	}
-
-	public function list() {}
 
 	private function handleCardBalanceChange(Card $card, TransactionTypeEnum $type, int $value): void
 	{

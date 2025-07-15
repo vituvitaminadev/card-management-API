@@ -38,10 +38,6 @@ return (new Config())
 		'@DoctrineAnnotation' => true,
 		'@PhpCsFixer' => true,
 		'header_comment' => false,
-		'braces_position' => [
-			'position_after_functions_and_oop_constructs' => 'next',
-			'position_after_anonymous_constructs' => 'next'
-		],
 		'array_syntax' => [
 			'syntax' => 'short',
 		],

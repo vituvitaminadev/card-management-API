@@ -9,8 +9,6 @@ use App\Model\Card;
 use App\Model\User;
 use function Hyperf\Support\make;
 
-use function Hyperf\Support\make;
-
 class CardService
 {
 	public function __construct() {}

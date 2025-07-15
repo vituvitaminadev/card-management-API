@@ -18,6 +18,7 @@ class ListTransactionRequest extends ModelFormRequest
     {
         return Transaction::class;
     }
+
     public function rules(): array
     {
         return [
