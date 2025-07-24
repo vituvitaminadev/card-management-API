@@ -8,7 +8,6 @@ use App\Enum\Transaction\TransactionTypeEnum;
 use App\Model\Card;
 use App\Model\Transaction;
 use App\Model\User;
-use Hyperf\Database\Model\Collection;
 use function Hyperf\Support\make;
 
 class TransactionService
