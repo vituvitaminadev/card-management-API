@@ -23,9 +23,7 @@ class AuthMiddleware implements MiddlewareInterface
         $token = $request->getHeaderLine('Authorization');
         $token = str_replace('Bearer ', '', $token);
 
-        if (!$decoded = $this->authService->decodeToken($token)) {
-            throw new UnauthorizedException();
-        }
+        $decoded = $this->authService->decodeToken($token);
 
         Context::set('jwt_token', $decoded);
 

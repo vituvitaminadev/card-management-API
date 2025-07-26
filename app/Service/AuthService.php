@@ -51,12 +51,12 @@ class AuthService
 		return $this->issueToken($user);
 	}
 
-	public function decodeToken(string $token): ?object
+	public function decodeToken(string $token): object
 	{
 		try {
 			return JWT::decode($token, new Key($this->secretKey, 'HS256'));
 		} catch (Throwable) {
-			return null;
+			throw new UnauthorizedException();
 		}
 	}
 
