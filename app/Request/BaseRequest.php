@@ -18,7 +18,6 @@ class BaseRequest extends FormRequest
         $token = Context::get('jwt_token');
 
         if ($token->type !== UserTypeEnum::ADMIN->value && $this->onlyAdmin) {
-            var_dump("o bosta");
             throw new UnauthorizedException();
         }
 
