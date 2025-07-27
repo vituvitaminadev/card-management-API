@@ -17,7 +17,7 @@ use function Hyperf\Support\env;
 return [
     'app_name' => env('APP_NAME', 'skeleton'),
     'app_env' => env('APP_ENV', 'dev'),
-    'app_secret' => env('APP_SECRET'),
+    'app_secret' => env('JWT_PUBLIC_KEY'),
     'scan_cacheable' => env('SCAN_CACHEABLE', false),
     StdoutLoggerInterface::class => [
         'log_level' => [
